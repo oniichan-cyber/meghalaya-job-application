@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Application</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="container verify-container">
+        <h1>Verification Required</h1>
+        <p class="subtitle">Enter the 5-digit code sent to your email and phone</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="flash-message {{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form id="verifyForm" action="/verify" method="POST">
+            <div class="form-group">
+                <label for="verification_code">Verification Code</label>
+                <input type="text" id="verification_code" name="verification_code" 
+                       placeholder="Enter 5-digit code" maxlength="5" required>
+                <span class="error-message" id="verifyError"></span>
+            </div>
+
+            <div class="countdown-container">
+                <span class="countdown-label">Time Remaining:</span>
+                <span class="countdown-timer" id="countdown">60</span>
+                <span class="countdown-unit">seconds</span>
+            </div>
+
+            <button type="submit" class="submit-btn" id="verifyBtn">Verify</button>
+            <button type="button" class="resend-btn" id="resendBtn" onclick="resendCode()">Resend Code</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
